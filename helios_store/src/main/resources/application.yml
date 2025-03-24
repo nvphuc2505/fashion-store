@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: helios_store
+  datasource:
+    url: jdbc:sqlserver://localhost:1433; encrypt=true; trustServerCertificate=true; databaseName=FashionStoreDB
+    username: sa
+    password: 250504
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: update
