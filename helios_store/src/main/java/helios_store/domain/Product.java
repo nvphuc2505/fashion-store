@@ -28,6 +28,12 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "price")
+    private String description;
+
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
