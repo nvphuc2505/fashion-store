@@ -1,6 +1,5 @@
-package com.fashion_store.order_service.product.dto;
+package com.fashion_store.order_service.dto.product;
 
-import com.fashion_store.order_service.product.dto.request.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

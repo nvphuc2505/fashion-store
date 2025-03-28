@@ -1,7 +1,7 @@
 package com.fashion_store.order_service.order.domain;
 
-import com.fashion_store.order_service.product.dto.ProductClient;
-import com.fashion_store.order_service.product.dto.request.ProductRequest;
+import com.fashion_store.order_service.dto.product.ProductClient;
+import com.fashion_store.order_service.dto.product.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

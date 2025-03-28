@@ -11,6 +11,6 @@ import java.net.URI;
 public class ClientProperties {
 
     @NotNull
-    URI catalogServiceUri;
+    private URI catalogServiceUri;
 
 }

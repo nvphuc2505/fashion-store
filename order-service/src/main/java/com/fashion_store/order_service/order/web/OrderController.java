@@ -1,4 +1,4 @@
-package com.fashion_store.order_service.web;
+package com.fashion_store.order_service.order.web;
 
 import com.fashion_store.order_service.order.domain.Order;
 import com.fashion_store.order_service.order.domain.OrderService;

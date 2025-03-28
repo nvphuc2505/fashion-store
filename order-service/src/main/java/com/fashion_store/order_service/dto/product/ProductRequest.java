@@ -1,4 +1,4 @@
-package com.fashion_store.order_service.product.dto.request;
+package com.fashion_store.order_service.dto.product;
 
 import lombok.Data;
 
