@@ -1,0 +1,87 @@
+server:
+  port: 8000
+  shutdown: graceful
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 15s
+
+
+
+spring:
+  application:
+    name: edge-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  cloud:
+    gateway:
+
+      # Whenever an application calls an external service, it's essential to configure a TIMEOUT
+      # to make it resilient to interprocess communication failures.
+      httpclient:
+        connect-timeout: 2000   # Time limit for a connection to be established (in ms)
+        response-timeout: 5s    # Time limit for a response to be received (Duration)
+        pool:
+          type: elastic
+          max-idle-time: 15s
+          max-life-time: 60s
+
+      routes:
+        - id: catalog-route
+          uri: http://localhost:8001/products
+          predicates:
+              - Path=/products
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: catalogCircuitBreaker
+                fallbackUri: forward:/catalog-fallback  # Forwards request to this URI when the circuit is open
+
+        - id: order-route
+          uri: http://localhost:8002/orders
+          predicates:
+            - Path=/orders
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderCircuitBreaker
+                # No fallback defined for this circuit breaker
+
+      default-filters:  # Apply for all routes
+        # Retry filter
+        - name: Retry
+          args:
+            retries: 3
+            method: GET
+            series: SERVER_ERROR
+            exceptions: java.io.IOException, java.util.concurrent.TimeoutException
+            backoff:  # Retries with a delay computed as “firstBackoff * (factor ^ n)”
+              firstBackoff: 50ms
+              maxBackOff: 500ms
+              factor: 2
+              basedOnPreviousValue: false
+
+
+
+resilience4j:
+  circuitbreaker:
+    # instances:
+    #  orderCircuitBreaker:
+    configs:
+      default:  # Default configuration bean for all circuit breakers
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 1500
+  timelimiter:
+    configs:
+      defaults:
+        timeoutDurations: 5s
+
+
+
+
+
+logging:
+  level:
+#    org.springframework.cloud.gateway: DEBUG
+    io.github.resilience4j: DEBUG
